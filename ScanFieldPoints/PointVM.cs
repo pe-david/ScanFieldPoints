@@ -7,15 +7,23 @@ using System.Windows;
 using ControlzEx.Standard;
 using Greylock.Common.ViewModels;
 using ReactiveDomain.Bus;
+using ReactiveUI;
 
 namespace ScanFieldPoints
 {
     public class PointVM : ViewModel
     {
-        private Point location;
+        private Point _location;
 
-        public PointVM(IGeneralBus bus) : base(bus)
+        public PointVM(Point location) : base(null)
         {
+            _location = location;
+        }
+
+        public Point Location
+        {
+            get => _location;
+            set => this.RaiseAndSetIfChanged(ref _location, value);
         }
     }
 }
