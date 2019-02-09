@@ -73,7 +73,7 @@ namespace ScanFieldPoints
 
         public IReactiveDerivedList<PointVM> MaskedPoints =>
                                              AllPoints.CreateDerivedCollection(
-                                                 x => new PointVM(x),
-                                                 filter: x => false);
+                                                 x => new PointVM(Bus, x),
+                                                 filter: x => true);
     }
 }

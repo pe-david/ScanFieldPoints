@@ -15,7 +15,7 @@ namespace ScanFieldPoints
     {
         private Point _location;
 
-        public PointVM(Point location) : base(null)
+        public PointVM(IGeneralBus bus, Point location) : base(bus)
         {
             _location = location;
         }
