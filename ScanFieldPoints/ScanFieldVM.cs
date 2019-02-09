@@ -13,15 +13,11 @@ namespace ScanFieldPoints
         private static readonly int spacing = 25;
 
         private ReactiveList<Point> _allPoints;
-        private Point _topLeft;
-        private Point _bottomRight;
-        private double height;
-        private double width;
+        private Point _topLeft = new Point(0, 0);
+        private Point _bottomRight = new Point(100, 100);
 
         public ScanFieldVM(IGeneralBus bus) : base(bus)
         {
-            Tuple<Point, Point> test = null;
-
             this.WhenAnyValue(
                     x => x.TopLeft,
                     x => x.BottomRight)
