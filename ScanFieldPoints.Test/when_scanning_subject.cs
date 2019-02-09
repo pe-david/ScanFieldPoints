@@ -25,5 +25,15 @@ namespace ScanFieldPoints.Test
             var newPointCount = vm.AllPoints.Count;
             Assert.IsOrBecomesTrue(() => newPointCount > originalPointCount);
         }
+
+        [Fact]
+        public void top_left_changes()
+        {
+            var vm = new ScanFieldVM(Bus);
+            var originalPointCount = vm.AllPoints.Count;
+            vm.TopLeft = new Point(25, 25);
+            var newPointCount = vm.AllPoints.Count;
+            Assert.IsOrBecomesTrue(() => newPointCount < originalPointCount);
+        }
     }
 }
