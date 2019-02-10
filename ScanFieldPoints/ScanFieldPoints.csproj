@@ -229,6 +229,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Bootstrap.cs" />
+    <Compile Include="Global.cs" />
     <Compile Include="PointVM.cs" />
     <Compile Include="ScanField.xaml.cs">
       <DependentUpon>ScanField.xaml</DependentUpon>

@@ -7,6 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Ellipse
+            x:Name="TheDot"
+            Fill="Blue"
+            Stroke="Black"
+            StrokeThickness="2"></Ellipse>
     </Grid>
 </UserControl>

@@ -1,18 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ReactiveUI;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using ReactiveUI;
 
 namespace ScanFieldPoints
 {
@@ -21,21 +8,35 @@ namespace ScanFieldPoints
     /// </summary>
     public partial class ScanPoint : IViewFor<PointVM>
     {
+        public static readonly DependencyProperty ViewModelProperty =
+            DependencyProperty.Register(
+                                        "ViewModel",
+                                        typeof(PointVM),
+                                        typeof(ScanPoint),
+                                        new PropertyMetadata(default(PointVM)));
+
         public ScanPoint()
         {
             InitializeComponent();
+
+            this.WhenActivated(
+                d =>
+                {
+                    d(this.OneWayBind(ViewModel, vm => vm.Location.X, v => v.TheDot.Width));
+                    d(this.OneWayBind(ViewModel, vm => vm.Location.Y, v => v.TheDot.Height));
+                });
         }
 
         public PointVM ViewModel
         {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
+            get => (PointVM)GetValue(ViewModelProperty);
+            set => SetValue(ViewModelProperty, value);
         }
 
         object IViewFor.ViewModel
         {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
+            get => ViewModel;
+            set => ViewModel = (PointVM)value;
         }
     }
 }
