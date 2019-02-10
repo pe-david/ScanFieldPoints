@@ -20,6 +20,8 @@ namespace ScanFieldPoints
             _location = location;
         }
 
+        public int PointSize => 15;
+
         public Point Location
         {
             get => _location;

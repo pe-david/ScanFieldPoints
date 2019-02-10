@@ -22,8 +22,8 @@ namespace ScanFieldPoints
             this.WhenActivated(
                 d =>
                 {
-                    d(this.OneWayBind(ViewModel, vm => vm.Location.X, v => v.TheDot.Width));
-                    d(this.OneWayBind(ViewModel, vm => vm.Location.Y, v => v.TheDot.Height));
+                    d(this.OneWayBind(ViewModel, vm => vm.PointSize, v => v.TheDot.Width));
+                    d(this.OneWayBind(ViewModel, vm => vm.PointSize, v => v.TheDot.Height));
                 });
         }
 

@@ -14,8 +14,9 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <ContentPresenter Content="{Binding}"></ContentPresenter>
+                <DataTemplate DataType="local:PointVM">
+                    <local:ScanPoint ViewModel="{Binding}"></local:ScanPoint>
+                    <!--<ContentControl Content="{Binding Location}"></ContentControl>-->
                     <!--<Path Fill="Black">
                         <Path.Data>
                             <EllipseGeometry RadiusX="2.5" RadiusY="2.5"/>
