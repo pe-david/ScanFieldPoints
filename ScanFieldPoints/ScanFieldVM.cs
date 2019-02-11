@@ -13,15 +13,21 @@ namespace ScanFieldPoints
         private static readonly int spacing = 25;
 
         private ReactiveList<Point> _allPoints;
-        private Point _topLeft = new Point(0, 0);
-        private Point _bottomRight = new Point(100, 100);
+        private Point _topLeft;
+        private Point _bottomRight;
 
         public ScanFieldVM(IGeneralBus bus) : base(bus)
         {
+            AllPoints = new ReactiveList<Point>();
             this.WhenAnyValue(
                     x => x.TopLeft,
                     x => x.BottomRight)
                 .Subscribe(RebuildPointList);
+
+            MaskedPoints =
+                AllPoints.CreateDerivedCollection(
+                    x => new PointVM(Bus, x),
+                    filter: x => true);
         }
 
         private void RebuildPointList(Tuple<Point, Point> boundaryPoints)
@@ -29,14 +35,14 @@ namespace ScanFieldPoints
             var topLeft = boundaryPoints.Item1;
             var bottomRight = boundaryPoints.Item2;
 
-            BuildPointList(topLeft, bottomRight);
+            BuildPointList();
         }
 
-        private void BuildPointList(Point topLeft, Point bottomRight)
+        private void BuildPointList()
         {
-            var pointList = new List<Point>();
-            var height = bottomRight.Y - topLeft.Y;
-            var width = bottomRight.X - topLeft.X;
+            AllPoints.Clear();
+            var height = BottomRight.Y - TopLeft.Y;
+            var width = BottomRight.X - TopLeft.X;
 
             var xPoints = (int)(width / spacing);
             var yPoints = (int)(height / spacing);
@@ -46,11 +52,9 @@ namespace ScanFieldPoints
                 for (int j = 0; j < yPoints; j++)
                 {
                     var p = new Point(i * spacing, j * spacing);
-                    pointList.Add(p);
+                    AllPoints.Add(p);
                 }
             }
-
-            AllPoints = new ReactiveList<Point>(pointList);
         }
 
         public Point TopLeft
@@ -71,9 +75,6 @@ namespace ScanFieldPoints
             set => this.RaiseAndSetIfChanged(ref _allPoints, value);
         }
 
-        public IReactiveDerivedList<PointVM> MaskedPoints =>
-                                             AllPoints.CreateDerivedCollection(
-                                                 x => new PointVM(Bus, x),
-                                                 filter: x => true);
+        public IReactiveDerivedList<PointVM> MaskedPoints;
     }
 }
