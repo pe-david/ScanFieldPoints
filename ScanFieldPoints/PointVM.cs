@@ -20,7 +20,7 @@ namespace ScanFieldPoints
             _location = new Point(location.X + PointSize/2, location.Y + PointSize/2);
         }
 
-        public int PointSize => 15;
+        public int PointSize => 8;
 
         public Point Location
         {

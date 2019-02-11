@@ -23,7 +23,7 @@ namespace ScanFieldPoints
             this.WhenAnyValue(
                     x => x.TopLeft,
                     x => x.BottomRight)
-                .Throttle(TimeSpan.FromSeconds(0.1))
+                .Throttle(TimeSpan.FromSeconds(0.2))
                 .ObserveOnDispatcher()
                 .Subscribe(RebuildPointList);
 
