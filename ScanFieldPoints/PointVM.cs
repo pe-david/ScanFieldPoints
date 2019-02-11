@@ -17,7 +17,7 @@ namespace ScanFieldPoints
 
         public PointVM(IGeneralBus bus, Point location) : base(bus)
         {
-            _location = location;
+            _location = new Point(location.X + PointSize/2, location.Y + PointSize/2);
         }
 
         public int PointSize => 15;

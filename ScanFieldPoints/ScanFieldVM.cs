@@ -3,6 +3,7 @@ using ReactiveDomain.Bus;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Reactive.Linq;
 using System.Windows;
 using ReactiveUI.Legacy;
 
@@ -22,6 +23,8 @@ namespace ScanFieldPoints
             this.WhenAnyValue(
                     x => x.TopLeft,
                     x => x.BottomRight)
+                .Throttle(TimeSpan.FromSeconds(0.1))
+                .ObserveOnDispatcher()
                 .Subscribe(RebuildPointList);
 
             MaskedPoints =
