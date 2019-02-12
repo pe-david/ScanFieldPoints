@@ -9,7 +9,7 @@
     <Grid>
         <Border BorderThickness="5" BorderBrush="Black">
             <local:ScanField
-                Pitch="50"
+                Pitch="25"
                 DotDiameter="3"></local:ScanField>
         </Border>
     </Grid>

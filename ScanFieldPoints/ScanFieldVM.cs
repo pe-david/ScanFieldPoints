@@ -80,14 +80,14 @@ namespace ScanFieldPoints
                                       out int xPoints,
                                       out int yPoints)
         {
-            var width = bottomRight.X - topLeft.X - DotSize;
-            var height = bottomRight.Y - topLeft.Y - DotSize;
+            var width = bottomRight.X - topLeft.X;
+            var height = bottomRight.Y - topLeft.Y;
 
-            xPoints = (int) Math.Floor(width / Pitch);
-            yPoints = (int) Math.Floor(height / Pitch);
+            xPoints = (int)Math.Floor(width / Pitch);
+            yPoints = (int)Math.Floor(height / Pitch);
 
-            xOffset = ((width - xPoints * Pitch) + Pitch) / 2;
-            yOffset = ((height - yPoints * Pitch) + Pitch) / 2;
+            xOffset = (((width - (xPoints - 1) * Pitch) - DotSize)) / 2;
+            yOffset = (((height - (yPoints - 1) * Pitch) - DotSize)) / 2;
         }
 
         public int Pitch
