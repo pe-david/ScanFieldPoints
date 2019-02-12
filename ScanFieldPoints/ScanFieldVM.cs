@@ -19,6 +19,7 @@ namespace ScanFieldPoints
         private Point _topLeft;
         private Point _bottomRight;
         private int _pitch = 25;
+        private int _dotSize = 8;
         private Bitmap _pointMask = new Bitmap(512, 512, PixelFormat.Format16bppGrayScale);
 
         public ScanFieldVM(IGeneralBus bus) : base(bus)
@@ -33,7 +34,7 @@ namespace ScanFieldPoints
 
             MaskedPoints =
                 AllPoints.CreateDerivedCollection(
-                    x => new PointVM(Bus, x),
+                    x => new PointVM(Bus, x, DotSize),
                     filter: p => true);
                     //filter: p => _pointMask.GetPixel((int)p.X, (int)p.Y) == Color.White);
         }
@@ -48,46 +49,53 @@ namespace ScanFieldPoints
 
         private void BuildPointList()
         {
-            var watch = new Stopwatch();
-            watch.Start();
-
             AllPoints.Clear();
-            var height = BottomRight.Y - TopLeft.Y;
-            var width = BottomRight.X - TopLeft.X;
 
-            var xPoints = (int)(width / Pitch);
-            var yPoints = (int)(height / Pitch);
-
-            ComputeXyOffsets(TopLeft, BottomRight, out var xOffset, out var yOffset);
+            ComputeXyOffsets(
+                            TopLeft,
+                            BottomRight,
+                            xOffset: out var xOffset,
+                            yOffset: out var yOffset,
+                            xPoints: out var xPoints,
+                            yPoints: out var yPoints);
             for (int i = 0; i < xPoints; i++)
             {
                 for (int j = 0; j < yPoints; j++)
                 {
-                    var p = new Point(i * Pitch + xOffset + Global.DotSize, j * Pitch + yOffset + Global.DotSize);
+                    var p = new Point(i * Pitch + xOffset, j * Pitch + yOffset);
                     AllPoints.Add(p);
                 }
             }
-
-            watch.Stop();
-            var xxx = watch.ElapsedMilliseconds;
         }
 
-        private void ComputeXyOffsets(Point topLeft, Point bottomRight, out double xOffset, out double yOffset)
+        private void ComputeXyOffsets(
+                                      Point topLeft,
+                                      Point bottomRight,
+                                      out double xOffset,
+                                      out double yOffset,
+                                      out int xPoints,
+                                      out int yPoints)
         {
             var width = bottomRight.X - topLeft.X;
             var height = bottomRight.Y - topLeft.Y;
 
-            var xPoints = Math.Floor(width / Pitch);
-            var yPoints = Math.Floor(height / Pitch);
+            xPoints = (int) Math.Floor(width / Pitch);
+            yPoints = (int) Math.Floor(height / Pitch);
 
-            xOffset = (width - xPoints * Pitch);
-            yOffset = (height - yPoints * Pitch);
+            xOffset = ((width - xPoints * Pitch) - Global.DotSize) / 2;
+            yOffset = ((height - yPoints * Pitch) - Global.DotSize) / 2;
         }
 
         public int Pitch
         {
             get => _pitch;
             set => this.RaiseAndSetIfChanged(ref _pitch, value);
+        }
+
+        public int DotSize
+        {
+            get => _dotSize;
+            set => this.RaiseAndSetIfChanged(ref _dotSize, value);
         }
 
         public Point TopLeft

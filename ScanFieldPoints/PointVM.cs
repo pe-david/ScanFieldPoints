@@ -14,13 +14,21 @@ namespace ScanFieldPoints
     public class PointVM : ViewModel
     {
         private Point _location;
+        private int _dotSize;
 
-        public PointVM(IGeneralBus bus, Point location) : base(bus)
+        public PointVM(IGeneralBus bus, Point location, int dotSize) : base(bus)
         {
+            _dotSize = dotSize;
             _location = new Point(location.X, location.Y);
         }
 
         public int PointSize => Global.DotSize;
+
+        public int DotSize
+        {
+            get => _dotSize;
+            set => this.RaiseAndSetIfChanged(ref _dotSize, value);
+        }
 
         public Point Location
         {

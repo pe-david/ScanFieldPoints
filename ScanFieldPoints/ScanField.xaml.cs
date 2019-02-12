@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using System.Runtime.CompilerServices;
+using ReactiveUI;
 using System.Windows;
 
 namespace ScanFieldPoints
@@ -29,17 +30,21 @@ namespace ScanFieldPoints
                 typeof(ScanField),
                 new PropertyMetadata(default(Point)));
 
-        //public static readonly DependencyProperty PitchProperty =
-        //    DependencyProperty.Register(
-        //        "Pitch",
-        //        typeof(int),
-        //        typeof(ScanField),
-        //        typeMetadata: new PropertyChangedCallback(OnPitchChanged));
+        public static readonly DependencyProperty PitchProperty =
+            DependencyProperty.Register(
+                "Pitch",
+                typeof(int),
+                typeof(ScanField),
+                new FrameworkPropertyMetadata(
+                    defaultValue: 25));
 
-        //private static void OnPitchChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+        public static readonly DependencyProperty DotDiameterProperty =
+            DependencyProperty.Register(
+                "DotDiameter",
+                typeof(int),
+                typeof(ScanField),
+                new FrameworkPropertyMetadata(
+                    defaultValue: 16));
 
         public ScanField()
         {
@@ -54,6 +59,9 @@ namespace ScanFieldPoints
                     d(this.Bind(ViewModel, vm => vm.TopLeft, v => v.TopLeft));
                     d(this.Bind(ViewModel, vm => vm.BottomRight, v => v.BottomRight));
                     //d(this.Bind(ViewModel, vm => vm.Pitch, v => v.Pitch));
+
+                    ViewModel.Pitch = Pitch;
+                    ViewModel.DotSize = DotDiameter;
 
                     TopLeft = new Point(0, 0);
                     BottomRight = new Point(this.Dots.ActualWidth, this.Dots.ActualHeight);
@@ -78,11 +86,17 @@ namespace ScanFieldPoints
             set => SetValue(BottomRightProperty, value);
         }
 
-        //public int Pitch
-        //{
-        //    get => (int)GetValue(PitchProperty);
-        //    set => SetValue(PitchProperty, value);
-        //}
+        public int Pitch
+        {
+            get => (int)GetValue(PitchProperty);
+            set => SetValue(PitchProperty, value);
+        }
+
+        public int DotDiameter
+        {
+            get => (int)GetValue(DotDiameterProperty);
+            set => SetValue(DotDiameterProperty, value);
+        }
 
         object IViewFor.ViewModel
         {

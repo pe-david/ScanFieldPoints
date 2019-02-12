@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <local:ScanField></local:ScanField>
+        <local:ScanField Pitch="50" DotDiameter="18"></local:ScanField>
     </Grid>
 </Window>
