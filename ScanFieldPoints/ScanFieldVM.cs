@@ -61,7 +61,7 @@ namespace ScanFieldPoints
             //var watch2 = new Stopwatch();
             //watch2.Start();
 
-            ComputeXOffset(TopLeft, BottomRight, out var xOffset, out var yOffset);
+            ComputeXyOffsets(TopLeft, BottomRight, out var xOffset, out var yOffset);
             //var pointList = new List<Point>();
             for (int i = 0; i < xPoints; i++)
             {
@@ -79,7 +79,7 @@ namespace ScanFieldPoints
             var xxx = watch.ElapsedMilliseconds;
         }
 
-        private void ComputeXOffset(Point topLeft, Point bottomRight, out double xOffset, out double yOffset)
+        private void ComputeXyOffsets(Point topLeft, Point bottomRight, out double xOffset, out double yOffset)
         {
             var width = bottomRight.X - topLeft.X;
             var height = bottomRight.Y - topLeft.Y;
