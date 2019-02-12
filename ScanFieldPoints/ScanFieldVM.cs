@@ -4,20 +4,22 @@ using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Reactive.Linq;
-using System.Windows;
 using System.Windows.Documents;
 using ReactiveUI.Legacy;
+using Point = System.Windows.Point;
 
 namespace ScanFieldPoints
 {
     public class ScanFieldVM : ViewModel
     {
-        private static readonly int spacing = 25;
-
         private ReactiveList<Point> _allPoints;
         private Point _topLeft;
         private Point _bottomRight;
+        private int _pitch = 25;
+        private Bitmap _pointMask = new Bitmap(512, 512, PixelFormat.Format16bppGrayScale);
 
         public ScanFieldVM(IGeneralBus bus) : base(bus)
         {
@@ -26,13 +28,14 @@ namespace ScanFieldPoints
                     x => x.TopLeft,
                     x => x.BottomRight)
                 .Throttle(TimeSpan.FromMilliseconds(100))
-                .ObserveOnDispatcher()
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(RebuildPointList);
 
             MaskedPoints =
                 AllPoints.CreateDerivedCollection(
                     x => new PointVM(Bus, x),
-                    filter: x => true);
+                    filter: p => true);
+                    //filter: p => _pointMask.GetPixel((int)p.X, (int)p.Y) == Color.White);
         }
 
         private void RebuildPointList(Tuple<Point, Point> boundaryPoints)
@@ -43,11 +46,8 @@ namespace ScanFieldPoints
             BuildPointList();
         }
 
-        //private static int timesCalled = 0;
-
         private void BuildPointList()
         {
-            //timesCalled++;
             var watch = new Stopwatch();
             watch.Start();
 
@@ -55,25 +55,18 @@ namespace ScanFieldPoints
             var height = BottomRight.Y - TopLeft.Y;
             var width = BottomRight.X - TopLeft.X;
 
-            var xPoints = (int)(width / spacing);
-            var yPoints = (int)(height / spacing);
-
-            //var watch2 = new Stopwatch();
-            //watch2.Start();
+            var xPoints = (int)(width / Pitch);
+            var yPoints = (int)(height / Pitch);
 
             ComputeXyOffsets(TopLeft, BottomRight, out var xOffset, out var yOffset);
-            //var pointList = new List<Point>();
             for (int i = 0; i < xPoints; i++)
             {
                 for (int j = 0; j < yPoints; j++)
                 {
-                    var p = new Point(i * spacing + xOffset + Global.DotSize, j * spacing + yOffset + Global.DotSize);
+                    var p = new Point(i * Pitch + xOffset + Global.DotSize, j * Pitch + yOffset + Global.DotSize);
                     AllPoints.Add(p);
                 }
             }
-            //AllPoints.AddRange(pointList);
-            //watch2.Stop();
-            //var yyy = watch2.ElapsedMilliseconds;
 
             watch.Stop();
             var xxx = watch.ElapsedMilliseconds;
@@ -84,11 +77,17 @@ namespace ScanFieldPoints
             var width = bottomRight.X - topLeft.X;
             var height = bottomRight.Y - topLeft.Y;
 
-            var xPoints = Math.Floor(width / spacing);
-            var yPoints = Math.Floor(height / spacing);
+            var xPoints = Math.Floor(width / Pitch);
+            var yPoints = Math.Floor(height / Pitch);
 
-            xOffset = (width - xPoints * spacing) / 2;
-            yOffset = (height - yPoints * spacing) / 2;
+            xOffset = (width - xPoints * Pitch);
+            yOffset = (height - yPoints * Pitch);
+        }
+
+        public int Pitch
+        {
+            get => _pitch;
+            set => this.RaiseAndSetIfChanged(ref _pitch, value);
         }
 
         public Point TopLeft

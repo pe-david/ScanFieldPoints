@@ -11,7 +11,7 @@
                       SizeChanged="OnSizeChanged">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas Background="Transparent"></Canvas>
+                    <Canvas Background="Bisque"></Canvas>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>

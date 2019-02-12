@@ -29,6 +29,18 @@ namespace ScanFieldPoints
                 typeof(ScanField),
                 new PropertyMetadata(default(Point)));
 
+        //public static readonly DependencyProperty PitchProperty =
+        //    DependencyProperty.Register(
+        //        "Pitch",
+        //        typeof(int),
+        //        typeof(ScanField),
+        //        typeMetadata: new PropertyChangedCallback(OnPitchChanged));
+
+        //private static void OnPitchChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    throw new System.NotImplementedException();
+        //}
+
         public ScanField()
         {
             InitializeComponent();
@@ -41,6 +53,7 @@ namespace ScanFieldPoints
                     d(this.OneWayBind(ViewModel, vm => vm.MaskedPoints, v => v.Dots.ItemsSource));
                     d(this.Bind(ViewModel, vm => vm.TopLeft, v => v.TopLeft));
                     d(this.Bind(ViewModel, vm => vm.BottomRight, v => v.BottomRight));
+                    //d(this.Bind(ViewModel, vm => vm.Pitch, v => v.Pitch));
 
                     TopLeft = new Point(0, 0);
                     BottomRight = new Point(this.Dots.ActualWidth, this.Dots.ActualHeight);
@@ -64,6 +77,12 @@ namespace ScanFieldPoints
             get => (Point)GetValue(BottomRightProperty);
             set => SetValue(BottomRightProperty, value);
         }
+
+        //public int Pitch
+        //{
+        //    get => (int)GetValue(PitchProperty);
+        //    set => SetValue(PitchProperty, value);
+        //}
 
         object IViewFor.ViewModel
         {

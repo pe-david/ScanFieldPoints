@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ScanFieldPoints"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid Background="LightGray">
+    <Grid>
         <local:ScanField></local:ScanField>
     </Grid>
 </Window>
