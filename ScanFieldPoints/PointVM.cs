@@ -22,8 +22,6 @@ namespace ScanFieldPoints
             _location = new Point(location.X, location.Y);
         }
 
-        public int PointSize => Global.DotSize;
-
         public int DotSize
         {
             get => _dotSize;

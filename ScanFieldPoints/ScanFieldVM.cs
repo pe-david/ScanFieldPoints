@@ -58,6 +58,10 @@ namespace ScanFieldPoints
                             yOffset: out var yOffset,
                             xPoints: out var xPoints,
                             yPoints: out var yPoints);
+
+            if (xOffset < 0) throw new InvalidOperationException("xOffset is negative.");
+            if (yOffset < 0) throw new InvalidOperationException("yOffset is negative.");
+
             for (int i = 0; i < xPoints; i++)
             {
                 for (int j = 0; j < yPoints; j++)
@@ -76,14 +80,14 @@ namespace ScanFieldPoints
                                       out int xPoints,
                                       out int yPoints)
         {
-            var width = bottomRight.X - topLeft.X;
-            var height = bottomRight.Y - topLeft.Y;
+            var width = bottomRight.X - topLeft.X - DotSize;
+            var height = bottomRight.Y - topLeft.Y - DotSize;
 
             xPoints = (int) Math.Floor(width / Pitch);
             yPoints = (int) Math.Floor(height / Pitch);
 
-            xOffset = ((width - xPoints * Pitch) - Global.DotSize) / 2;
-            yOffset = ((height - yPoints * Pitch) - Global.DotSize) / 2;
+            xOffset = ((width - xPoints * Pitch) + Pitch) / 2;
+            yOffset = ((height - yPoints * Pitch) + Pitch) / 2;
         }
 
         public int Pitch
