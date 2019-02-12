@@ -7,10 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Border BorderThickness="5" BorderBrush="Black">
-            <local:ScanField
-                Pitch="25"
-                DotDiameter="3"></local:ScanField>
-        </Border>
+        <local:ScanField
+            Pitch="25"
+            DotDiameter="3"
+            BorderThickness="3"
+            BorderBrush="Red"></local:ScanField>
     </Grid>
 </Window>

@@ -1,6 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using ReactiveUI;
 using System.Windows;
+using Point = System.Windows.Point;
+using System.Windows.Media;
 
 namespace ScanFieldPoints
 {
@@ -46,6 +48,22 @@ namespace ScanFieldPoints
                 new FrameworkPropertyMetadata(
                     defaultValue: 16));
 
+        public new static readonly DependencyProperty BorderThicknessProperty =
+            DependencyProperty.Register(
+                "BorderThickness",
+                typeof(Thickness),
+                typeof(ScanField),
+                new FrameworkPropertyMetadata(
+                    defaultValue: new Thickness(2)));
+
+        public new static readonly DependencyProperty BorderBrushProperty =
+            DependencyProperty.Register(
+                "BorderBrush",
+                typeof(Brush),
+                typeof(ScanField),
+                new FrameworkPropertyMetadata(
+                    defaultValue: Brushes.Black));
+
         public ScanField()
         {
             InitializeComponent();
@@ -62,6 +80,8 @@ namespace ScanFieldPoints
 
                     ViewModel.Pitch = Pitch;
                     ViewModel.DotSize = DotDiameter;
+                    DotsBorder.BorderThickness = BorderThickness;
+                    DotsBorder.BorderBrush = BorderBrush;
 
                     TopLeft = new Point(0, 0);
                     BottomRight = new Point(this.Dots.ActualWidth, this.Dots.ActualHeight);
@@ -96,6 +116,18 @@ namespace ScanFieldPoints
         {
             get => (int)GetValue(DotDiameterProperty);
             set => SetValue(DotDiameterProperty, value);
+        }
+
+        public new Thickness BorderThickness
+        {
+            get => (Thickness)GetValue(BorderThicknessProperty);
+            set => SetValue(BorderThicknessProperty, value);
+        }
+
+        public new Brush BorderBrush
+        {
+            get => (Brush)GetValue(BorderBrushProperty);
+            set => SetValue(BorderBrushProperty, value);
         }
 
         object IViewFor.ViewModel
