@@ -19,5 +19,7 @@ namespace ScanFieldPoints
         }
 
         public static IGeneralBus Bus { get; }
+
+        public static int DotSize => 8;
     }
 }
