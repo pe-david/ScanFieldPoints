@@ -239,6 +239,7 @@
     <Compile Include="ScanPoint.xaml.cs">
       <DependentUpon>ScanPoint.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Win32 Helper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

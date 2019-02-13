@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Reactive.Linq;
 using System.Windows.Documents;
+using System.Windows.Media.Imaging;
 using ReactiveUI.Legacy;
 using Point = System.Windows.Point;
 
@@ -20,7 +21,8 @@ namespace ScanFieldPoints
         private Point _bottomRight;
         private int _pitch = 25;
         private int _dotSize = 8;
-        private Bitmap _pointMask = new Bitmap(512, 512, PixelFormat.Format16bppGrayScale);
+        //private Bitmap _pointMask = new Bitmap(512, 512, PixelFormat.Format16bppGrayScale);
+        private Bitmap _pointMask = new Bitmap(@"C:\Users\rosed18169\source\repos\ScanFieldPoints\ScanFieldPoints\Resources\mask.tif");
 
         public ScanFieldVM(IGeneralBus bus) : base(bus)
         {
@@ -35,8 +37,42 @@ namespace ScanFieldPoints
             MaskedPoints =
                 AllPoints.CreateDerivedCollection(
                     x => new PointVM(Bus, x, DotSize),
-                    filter: p => true);
-                    //filter: p => _pointMask.GetPixel((int)p.X, (int)p.Y) == Color.White);
+                    p => ExamineP(p));
+            //filter: p => PixelInMap((int)p.X, (int)p.Y));
+            //filter: p => true);
+        }
+
+        private bool ExamineP(Point p)
+        {
+            var color1 = Win32_Helper.GetColor((int)p.X, (int)p.Y);
+            var color = _pointMask.GetPixel((int)p.X, (int)p.Y);
+            var test1 = color == color1;
+
+            var white = Color.Black;
+            var test = color == Color.White;
+            return true;
+        }
+
+        private bool PixelInMap(int x, int y)
+        {
+            try
+            {
+                var color = _pointMask.GetPixel(x, y);
+                var test = color == Color.White;
+
+                if (test == true)
+                {
+                    var msg = $"The color is {color.ToString()}";
+                    throw new InvalidOperationException(msg);
+                }
+
+                return test;
+            }
+            catch (InvalidOperationException e)
+            {
+                var msg = e.Message;
+                return false;
+            }
         }
 
         private void RebuildPointList(Tuple<Point, Point> boundaryPoints)
